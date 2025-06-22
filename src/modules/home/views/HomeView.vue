@@ -53,7 +53,7 @@
 import Carousel from '../components/Carousel.vue';
 import SubCarousel from '../components/SubCarousel.vue';
 import { onMounted } from 'vue';
-import { useAnimeStore } from '../stores/useAnimeStore';
+import { useAnimeStore } from '../stores/UseAnimeStore';
 
 const animeStore = useAnimeStore();
 
