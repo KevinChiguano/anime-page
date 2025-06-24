@@ -2,14 +2,10 @@
     <div class="relative min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
         <!-- Fondo desenfocado cuando el sidebar está abierto -->
         <div v-if="isSidebarOpen && !isDesktop" class="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm"
-            @click="() => { toggleSidebar(); document.body.classList.remove('overflow-hidden') }" />
+            @click="handleBackdropClick" />
 
+        <Sidebar :isOpen="isSidebarOpen" :isDesktop="isDesktop" @closeSidebar="handleSidebarClose" />
 
-        <!-- Sidebar -->
-        <Sidebar :isOpen="isSidebarOpen" :isDesktop="isDesktop" @closeSidebar="() => {
-            isSidebarOpen = false
-            document.body.classList.remove('overflow-hidden')
-        }" />
 
         <!-- Contenido principal -->
         <div class="min-h-screen flex flex-col transition-all duration-300"
@@ -65,6 +61,17 @@ const handleResize = () => {
 
     isDesktop.value = nowDesktop
 }
+
+const handleBackdropClick = () => {
+    isSidebarOpen.value = false
+    document.body.classList.remove('overflow-hidden')
+}
+
+const handleSidebarClose = () => {
+    isSidebarOpen.value = false
+    document.body.classList.remove('overflow-hidden')
+}
+
 
 
 onMounted(() => {
