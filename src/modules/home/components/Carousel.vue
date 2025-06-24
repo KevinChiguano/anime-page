@@ -24,12 +24,12 @@
     </div>
 </template>
 
+
 <script setup>
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import SlideItem from './SlideItem.vue'
-import { getTopAnime } from '../helpers/JikanAnimeClient'
 
-const items = ref([]) // Empieza vacío
+
 
 const carousel = ref(null)
 const currentIndex = ref(1)
@@ -37,19 +37,7 @@ const animating = ref(true)
 let interval = null
 let isTransitioning = false
 
-const fetchData = async () => {
-    try {
-        const data = await getTopAnime()
-        // Limita a los primeros 5 o transforma la info si es necesario
-        items.value = data.slice(0, 25).map(anime => ({
-            image: anime.images.jpg.large_image_url|| anime.images.webp.large_image_url ,
-            title: anime.title,
-            description: anime.synopsis || 'Sin descripción disponible.',
-        }))
-    } catch (error) {
-        console.error('Error cargando datos del anime:', error)
-    }
-}
+
 
 const nextSlide = () => {
     if (isTransitioning) return
@@ -68,7 +56,7 @@ const prevSlide = () => {
 }
 
 const handleTransitionEnd = async () => {
-    if (currentIndex.value === items.value.length + 1) {
+    if (currentIndex.value === props.items.length + 1) {
         animating.value = false
         currentIndex.value = 1
         await nextTick()
@@ -81,7 +69,7 @@ const handleTransitionEnd = async () => {
 
     if (currentIndex.value === 0) {
         animating.value = false
-        currentIndex.value = items.value.length
+        currentIndex.value = props.items.length
         await nextTick()
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
@@ -104,10 +92,17 @@ const resetTimer = () => {
     startAutoSlide()
 }
 
+const props = defineProps({
+    items: {
+        type: Array,
+        required: true
+    }
+})
+
 onMounted(async () => {
-    await fetchData() // Carga inicial de datos
     startAutoSlide()
     import('feather-icons').then((feather) => feather.replace())
+
 })
 
 onBeforeUnmount(() => {

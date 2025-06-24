@@ -3,15 +3,21 @@
         class="min-w-full h-full flex flex-col md:flex-row items-center bg-white dark:bg-gray-900 overflow-hidden relative transition-all duration-500 ease-in-out">
         <!-- Imagen -->
         <div class="w-full md:w-1/2 h-[300px] md:h-full relative flex items-center justify-center">
-            <img :src="item.image" class="w-full h-full object-cover md:object-contain object-center md:object-center" draggable="false" />
+            <img :src="item.image" class="w-full h-full object-cover md:object-contain object-center md:object-center"
+                draggable="false" />
 
             <!-- Overlay con texto solo en pantallas pequeñas -->
             <div
                 class="absolute inset-0 flex flex-col items-center justify-center bg-black/60 text-white md:hidden px-6 text-center space-y-4">
                 <h2 class="text-2xl font-bold">{{ item.title }}</h2>
                 <button class="px-5 py-2 bg-blue-600 hover:bg-blue-700 transition">
-                    Ver más
+                    <router-link :to="`/detalle/anime/${item.id}`"
+                        class="inline-block">
+                        Ver más
+                    </router-link>
+
                 </button>
+
             </div>
         </div>
 
@@ -25,7 +31,7 @@
 
                 <!-- Descripción con line-clamp -->
                 <p class="line-clamp-3 text-sm sm:text-base text-gray-700 dark:text-gray-300 leading-relaxed">
-                    {{ item.description }}
+                    {{ item.synopsis }}
                 </p>
 
                 <!-- Botón -->

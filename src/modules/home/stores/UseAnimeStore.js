@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { getSeasonNowAnime, getRecommendAnime } from '../helpers/JikanAnimeClient'
+import { getSeasonNowAnime, getRecommendAnime, getTopAnime } from '../helpers/JikanAnimeClient'
 import { getTopManga } from '../helpers/JikanMangaClient'
 
 
@@ -8,9 +8,10 @@ export const useAnimeStore = defineStore('anime', () => {
     const itemsSeason = ref([])
     const itemsRecommend = ref([])
     const itemsTopManga = ref([])
+    const itemsTopAnime = ref([])
 
     const fetchSeason = async () => {
-        if (itemsSeason.value > 0) return
+        if (itemsSeason.value.length > 0) return
         const data = await getSeasonNowAnime()
         itemsSeason.value = data.slice(0, 24).map(anime => ({
             id: anime.mal_id,
@@ -25,7 +26,7 @@ export const useAnimeStore = defineStore('anime', () => {
     }
 
     const fetchRecommend = async () => {
-        if (itemsRecommend.value > 0 ) return
+        if (itemsRecommend.value.length > 0 ) return
         const data = await getRecommendAnime()
         const recommended = []
         data.slice(0, 24).forEach(anime => {
@@ -39,11 +40,11 @@ export const useAnimeStore = defineStore('anime', () => {
             })
         })
         itemsRecommend.value = recommended
-        console.log("season: ",itemsRecommend);
+        console.log("recomendados: ",itemsRecommend);
     }
 
     const fetchTopManga = async () => {
-        if (itemsTopManga.value > 0) return
+        if (itemsTopManga.value.length > 0) return
         const data = await getTopManga()
         itemsTopManga.value = data.slice(0, 24).map(manga => ({
             id: manga.mal_id,
@@ -53,16 +54,32 @@ export const useAnimeStore = defineStore('anime', () => {
             synopsis: manga.synopsis,
             category: 'manga'
         }))
-        console.log("season: ",itemsTopManga);
+        console.log("top manga: ",itemsTopManga);
+    }
+
+    const fetchTopAnime = async () => {
+        if (itemsTopAnime.value.length > 0) return
+        const data = await getTopAnime()
+        itemsTopAnime.value = data.slice(0, 24).map(anime => ({
+            id: anime.mal_id,
+            image: anime.images.jpg.large_image_url || anime.images.webp.large_image_url,
+            title: anime.title,
+            type: anime.type,
+            synopsis: anime.synopsis,
+            category: 'anime'
+        }))
+        console.log("top anime: ",itemsTopAnime);
     }
 
     return {
         itemsSeason,
         itemsRecommend,
         itemsTopManga,
+        itemsTopAnime,
         fetchSeason,
         fetchRecommend,
-        fetchTopManga
+        fetchTopManga,
+        fetchTopAnime
     }
 },{
     persist: true

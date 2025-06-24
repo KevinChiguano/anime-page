@@ -4,7 +4,7 @@
 
     <!-- Carrusel Principal -->
     <div class="animate-fadeSlideIn mb-12">
-      <Carousel />
+      <Carousel :items="animeStore.itemsTopAnime"/>
     </div>
 
     <!-- Sección Animes -->
@@ -61,6 +61,7 @@ onMounted(async () => {
   await animeStore.fetchSeason();
   await animeStore.fetchRecommend();
   await animeStore.fetchTopManga();
+  await animeStore.fetchTopAnime();
 });
 </script>
 
