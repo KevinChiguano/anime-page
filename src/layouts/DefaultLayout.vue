@@ -6,7 +6,10 @@
 
 
         <!-- Sidebar -->
-        <Sidebar :isOpen="isSidebarOpen" :isDesktop="isDesktop" @closeSidebar="isSidebarOpen = false" />
+        <Sidebar :isOpen="isSidebarOpen" :isDesktop="isDesktop" @closeSidebar="() => {
+            isSidebarOpen = false
+            document.body.classList.remove('overflow-hidden')
+        }" />
 
         <!-- Contenido principal -->
         <div class="min-h-screen flex flex-col transition-all duration-300"
